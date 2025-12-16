@@ -1,4 +1,4 @@
-package com.jemyelek.execute_modes;
+package com.jemyelek.execution_modes;
 
 public class CLIMode {
 

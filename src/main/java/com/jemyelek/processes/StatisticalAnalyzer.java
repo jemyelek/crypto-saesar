@@ -1,7 +1,10 @@
 package com.jemyelek.processes;
 
 public class StatisticalAnalyzer {
-    public int findMostLikelyShift(String encryptedText, char[] alphabet, String representativeText) {
-        return 0;
+    /**
+     *Эта функция не готова
+     * */
+    public static void startAnalyze() {
+        System.out.println("Этот раздел еще не готов.");
     }
 }

@@ -1,5 +1,7 @@
 package com.jemyelek.processes;
 
+import com.jemyelek.utils.Alphabet;
+
 public class Cipher {
 
     private final Alphabet alphabet;

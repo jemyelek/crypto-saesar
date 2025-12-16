@@ -1,6 +1,6 @@
 package com.jemyelek.utils;
 
-import com.jemyelek.exceptions.CryptoException;
+import com.jemyelek.exceptions.FileValidationException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,7 +24,7 @@ public class FileManager {
                     .collect(Collectors
                             .joining(System.lineSeparator()));
         } catch (IOException e) {
-            throw new CryptoException("Ошибка чтения файла: ", e);
+            throw new FileValidationException("Ошибка чтения файла: ", e);
         }
     }
 
@@ -36,7 +36,7 @@ public class FileManager {
         try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
             writer.write(text);
         } catch (IOException e) {
-            throw new CryptoException("Ошибка записи в файл: ", e);
+            throw new FileValidationException("Ошибка записи в файл: ", e);
         }
     }
 
