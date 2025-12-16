@@ -16,7 +16,7 @@ public class FileValidator {
                     "C:\\Windows",
                     "C:\\Program Files",
                     "C:\\Program Files (x86)",
-                    /*"C:\\Users\\Default",*/
+                    "C:\\Users\\Default",
 
                     /* --- Linux/macOS --- */
                     "/",
@@ -29,11 +29,26 @@ public class FileValidator {
                     "/System",
                     "/Library").map(path -> Path.of(path).normalize())
             .collect(Collectors.toUnmodifiableSet());
-
-    public static boolean isPathValid(String path) throws FileValidationException {
-        if (!isPathEmpty(path)) return false;
-        if (!isFileExists(path)) return false;
-        return !isSystemPath(path);
+    
+    public static void validatePath(String path) {
+        if (path == null || path.trim().isEmpty()) {
+            throw new FileValidationException("Переданный путь пуст.");
+        }
+        
+        Path file;
+        try {
+            file = Path.of(path).normalize();
+        } catch (InvalidPathException e) {
+            throw new FileValidationException("Указанный путь недействителен.", e);
+        }
+        
+        if (!Files.exists(file) || !Files.isRegularFile(file)) {
+            throw new FileValidationException("Файл не существует или это не файл.");
+        }
+        
+        if (isSystemPath(file)) {
+            throw new FileValidationException("Указанный путь недопустим.");
+        }
     }
 
     public static boolean isKeyValid(int key, Alphabet alphabet) {
@@ -44,35 +59,13 @@ public class FileValidator {
         return true;
     }
 
-    private static boolean isPathEmpty(String path) {
-        if (path == null || path.trim().isEmpty()) {
-            System.out.println("Введенная директория пуста.");
-            return false;
-        }
-        return true;
-    }
-
-    private static boolean isFileExists(String filePath) {
-        Path file;
-        try {
-            file = Path.of(filePath).normalize();
-        } catch (InvalidPathException e) {
-            throw new FileValidationException("Введенный путь недействителен.", e);
-        }
-
-        if (Files.exists(file) && Files.isRegularFile(file))
-            return true;
-
-        throw new FileValidationException("Указанного файла нет или она является директорией.");
-    }
-
     /**
      * Проверка директории на наличие системных папок или директорий.<br>
      * Если {@code true}, то процесс прерывается.
      *
      */
-    private static boolean isSystemPath(String filePath) {
-        Path path = Path.of(filePath).normalize();
+    private static boolean isSystemPath(Path file) {
+        Path path = file.normalize();
         boolean isDanger = false;
 
         for (Path pathPart : DANGEROUS_PATHS) {

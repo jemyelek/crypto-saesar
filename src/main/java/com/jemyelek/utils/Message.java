@@ -23,8 +23,8 @@ public class Message {
     
     public static final String BYE = "Программа завершена. Пока!";
     public static final String TRY_AGAIN = "Неверный номер. Попробуйте заново.";
-    public static final String INCORRECT_NUMBER_TRY_AGAIN = "Неверный ввод. Попробуйте заново.";
     public static final String INCORRECT_NUMBER_BYE = "Введен неверный номер. " + BYE;
+    public static final String INCORRECT_NUMBER_TRY_AGAIN = "Неверный ввод. Попробуйте заново.";
     public static final String INCORRECT_KEY = "Ошибка ввода ключа.";
     public static final String INCORRECT_FILE = "";
     public static final String INCORRECT_PATH = "";

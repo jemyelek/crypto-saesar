@@ -1,5 +1,6 @@
 package com.jemyelek.processes;
 
+import com.jemyelek.exceptions.FileValidationException;
 import com.jemyelek.utils.Alphabet;
 import com.jemyelek.utils.FileManager;
 import com.jemyelek.validations.FileValidator;
@@ -20,18 +21,20 @@ public class BruteForce {
      *
      */
     public static void startBruteForce() {
-        Scanner scanner = new Scanner(in);
-        System.out.println("Введите путь к зашифрованному фалу:");
-        String encryptedTextFilePath = scanner.nextLine();
-
-        if (!FileValidator.isPathValid(encryptedTextFilePath))
-            return;
-
-        BruteForce bruteForce = new BruteForce();
-        String decryptedText = bruteForce.bruteForceDecryptor(encryptedTextFilePath);
-        fileManager.writeFile(decryptedText, PATH_TO_TEXT_FOR_DECRYPTED_DATA);
-
-        System.out.println("Взлом шифрования завершен. Проверьте файл.");
+        try {
+            Scanner scanner = new Scanner(in);
+            System.out.println("Введите путь к зашифрованному фалу:");
+            String encryptedTextFilePath = scanner.nextLine();
+            FileValidator.validatePath(encryptedTextFilePath);
+            
+            BruteForce bruteForce = new BruteForce();
+            String decryptedText = bruteForce.bruteForceDecryptor(encryptedTextFilePath);
+            fileManager.writeFile(decryptedText, PATH_TO_TEXT_FOR_DECRYPTED_DATA);
+            
+            System.out.println("Взлом шифрования завершен. Проверьте файл.");
+        } catch (FileValidationException e) {
+            System.out.println(e.getMessage());;
+        }
     }
 
     private String bruteForceDecryptor(String encryptedTextPath) {
