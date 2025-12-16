@@ -10,8 +10,8 @@ import static com.jemyelek.utils.Constants.PATH_TO_ENCRYPTED_TEXT;
 import static java.lang.System.in;
 
 public class Decode {
-    private static final FileManager FILE_MANAGER = new FileManager();
-    private static final Alphabet ALPHABET = new Alphabet();
+    private static final FileManager fileManager = new FileManager();
+    private static final Alphabet alphabet = new Alphabet();
 
     /**
      * Запускается режим расшифровки данных.
@@ -25,17 +25,17 @@ public class Decode {
         if (!FileValidator.isPathValid(encryptedTextFilePath))
             return;
 
-        System.out.println("Введите ключ расшифровки: (Допустимый диапазон 1-" + ALPHABET.alphabetSize() + ")");
+        System.out.println("Введите ключ расшифровки: (Допустимый диапазон 1-" + alphabet.alphabetSize() + ")");
         int inputKey = scanner.nextInt();
-        if (!FileValidator.isKeyValid(inputKey, ALPHABET))
+        if (!FileValidator.isKeyValid(inputKey, alphabet))
             return;
 
-        String textFromDecryptedFile = FILE_MANAGER.readFile(PATH_TO_ENCRYPTED_TEXT);
+        String textFromDecryptedFile = fileManager.readFile(PATH_TO_ENCRYPTED_TEXT);
         String decryptedTextFilePath = "";
 
-        Cipher cipherDecrypt = new Cipher(ALPHABET);
+        Cipher cipherDecrypt = new Cipher(alphabet);
         String decryptedText = cipherDecrypt.decrypt(textFromDecryptedFile, inputKey);
-        FILE_MANAGER.writeFile(decryptedText, decryptedTextFilePath);
+        fileManager.writeFile(decryptedText, decryptedTextFilePath);
         System.out.println("Расшифровка завершена, проверти результат.");
     }
 }

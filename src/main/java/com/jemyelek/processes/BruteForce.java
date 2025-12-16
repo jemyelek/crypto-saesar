@@ -12,8 +12,8 @@ import static com.jemyelek.utils.Constants.PATH_TO_TEXT_FOR_DECRYPTED_DATA;
 import static java.lang.System.in;
 
 public class BruteForce {
-    private static final FileManager FILE_MANAGER = new FileManager();
-    private static final Alphabet ALPHABET = new Alphabet();
+    private static final FileManager fileManager = new FileManager();
+    private static final Alphabet alphabet = new Alphabet();
 
     /**
      * Запускается режим взлома зашифрованных данных.
@@ -29,19 +29,19 @@ public class BruteForce {
 
         BruteForce bruteForce = new BruteForce();
         String decryptedText = bruteForce.bruteForceDecryptor(encryptedTextFilePath);
-        FILE_MANAGER.writeFile(decryptedText, PATH_TO_TEXT_FOR_DECRYPTED_DATA);
+        fileManager.writeFile(decryptedText, PATH_TO_TEXT_FOR_DECRYPTED_DATA);
 
         System.out.println("Взлом шифрования завершен. Проверьте файл.");
     }
 
     private String bruteForceDecryptor(String encryptedTextPath) {
-        String sampleText = FILE_MANAGER.readFile(PATH_TO_SAMPLE_TEXT_FOR_DECRYPTION);
-        String encryptedText = FILE_MANAGER.readFile(encryptedTextPath);
+        String sampleText = fileManager.readFile(PATH_TO_SAMPLE_TEXT_FOR_DECRYPTION);
+        String encryptedText = fileManager.readFile(encryptedTextPath);
         String decryptedText = "";
 
         int passKey = decryptProcess(sampleText, encryptedText);
         if (passKey != -1) {
-            Cipher cipher = new Cipher(ALPHABET);
+            Cipher cipher = new Cipher(alphabet);
             decryptedText = cipher.decrypt(encryptedText, passKey);
         }
         return decryptedText;
@@ -54,12 +54,12 @@ public class BruteForce {
      */
     private int decryptProcess(String sample, String encryptedText) {
         List<String> list = encryptedText.lines().toList();
-        Cipher cipher = new Cipher(ALPHABET);
+        Cipher cipher = new Cipher(alphabet);
 
         String line = list.get(0);
         String testResult = "";
         int key = -1;
-        for (int i = 1; i <= ALPHABET.alphabetSize(); i++) {
+        for (int i = 1; i <= alphabet.alphabetSize(); i++) {
             testResult = cipher.decrypt(line, i);
             if (testResult.contains(" ")) {
                 if (checkEquality(testResult, sample)) {
@@ -77,7 +77,7 @@ public class BruteForce {
      *
      */
     private boolean checkEquality(String testResult, String sample) {
-        testResult = ALPHABET.clearSymbols(testResult);
+        testResult = alphabet.clearSymbols(testResult);
         String[] parts = testResult.split(" ");
         String[] sampleParts = sample.split(" ");
 
