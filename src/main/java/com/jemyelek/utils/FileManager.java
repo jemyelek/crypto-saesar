@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.Collectors;
 
 public class FileManager {
 
@@ -19,10 +18,14 @@ public class FileManager {
     public String readFile(String filePath) {
         Path path = Path.of(filePath).normalize();
         try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
-            return reader
-                    .lines()
-                    .collect(Collectors
-                            .joining(System.lineSeparator()));
+            StringBuilder result = new StringBuilder();
+            String line;
+            
+            while ((line = reader.readLine()) != null) {
+                result.append(line).append(System.lineSeparator());
+            }
+            return result.toString();
+            
         } catch (IOException e) {
             throw new FileValidationException("Ошибка чтения файла: ", e);
         }

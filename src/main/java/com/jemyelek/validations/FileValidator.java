@@ -52,7 +52,7 @@ public class FileValidator {
     }
 
     public static boolean isKeyValid(int key, Alphabet alphabet) {
-        if (alphabet.alphabetSize() < key) {
+        if (key > alphabet.alphabetSize() || key < 0) {
             System.out.println("Введенный ключ [" + key + "] не в диапазоне допустимого числа.");
             return false;
         }
